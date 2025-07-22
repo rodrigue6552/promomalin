@@ -1,35 +1,49 @@
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Promomalin - Offres Exclusives</title>
+  <meta charset="UTF-8">
+  <title>Tableau de Bord Virement</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
-    h1 { color: #333; }
-    .offer { margin: 20px auto; padding: 20px; background: #fff; max-width: 400px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    .offer a { display: inline-block; padding: 10px 20px; background: #007BFF; color: #fff; text-decoration: none; border-radius: 5px; }
-    .offer a:hover { background: #0056b3; }
+    body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    input, select, button { width: 100%; margin-top: 10px; padding: 10px; font-size: 1rem; }
+    .output { margin-top: 20px; background: #f9f9f9; padding: 10px; border-radius: 5px; }
   </style>
 </head>
 <body>
-  <h1>Bienvenue sur Promomalin 🎉</h1>
-  <p>Découvrez nos offres d'affiliation exclusives :</p>
-
-  <div class="offer">
-    <h2>💰 Gagnez de l'argent avec Amazon</h2>
-    <a href="https://amzn.to/tonlienaffiliation" target="_blank">Voir l'offre</a>
+  <div class="container">
+    <h2>💼 Tableau de Bord</h2>
+    <p><strong>Solde disponible :</strong> <span id="solde">5 000 000 €</span></p>
+    <form id="virementForm">
+      <input type="text" id="nom" placeholder="Nom du client" required>
+      <input type="number" id="montant" placeholder="Montant (€)" required>
+      <input type="tel" id="numero" placeholder="Numéro de téléphone" required>
+      <select id="langue">
+        <option value="fr">Français</option>
+        <option value="en">Anglais</option>
+      </select>
+      <input type="number" id="pourcentage" placeholder="Pourcentage à virer (%)" required min="1" max="100">
+      <button type="submit">🔗 Générer le lien client</button>
+    </form>
+    <div class="output" id="lienClient"></div>
   </div>
+  <script>
+    document.getElementById('virementForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nom = document.getElementById('nom').value;
+      const montant = parseFloat(document.getElementById('montant').value);
+      const numero = document.getElementById('numero').value;
+      const langue = document.getElementById('langue').value;
+      const pourcentage = parseInt(document.getElementById('pourcentage').value);
 
-  <div class="offer">
-    <h2>📱 Gagnez avec AliExpress</h2>
-    <a href="https://s.click.aliexpress.com/tonlien" target="_blank">Voir l'offre</a>
-  </div>
+      const montantEnvoye = (montant * pourcentage / 100).toFixed(2);
+      const reste = (montant - montantEnvoye).toFixed(2);
 
-  <div class="offer">
-    <h2>🎮 Programmes gaming</h2>
-    <a href="https://tonlienici.com" target="_blank">Découvrir</a>
-  </div>
+      const url = `client.html?nom=${encodeURIComponent(nom)}&montant=${montant}&envoye=${montantEnvoye}&reste=${reste}&langue=${langue}&tel=${numero}`;
+
+      document.getElementById('lienClient').innerHTML = `<strong>Lien client :</strong><br><a href="${url}" target="_blank">${url}</a>`;
+    });
+  </script>
 </body>
 </html>
